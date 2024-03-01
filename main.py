@@ -6,6 +6,7 @@ def main():
     mileage = int(input())
     # delta = np.array([0.0, 0.0])
     delta = linear_regression()
+    # print(delta)
 
     # meta_data = open('result', 'r')
 
