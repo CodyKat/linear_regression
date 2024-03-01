@@ -20,7 +20,7 @@ def parse_data():
 
 
 # Adjusted the learning rate for example
-def linear_regression(learn_rate=1e-3):
+def linear_regression(learn_rate=1e-1):
     delta = np.array([0.0, 0.0])
 
     pos = parse_data()
@@ -41,7 +41,8 @@ def linear_regression(learn_rate=1e-3):
     print("after X: ", X)
     print("after Y: ", Y)
 
-    for i in range(100000):
+    fig, ax = plt.subplots()
+    for i in range(1000):
         # while 1:
         Y_pred = delta[1] * X + delta[0]
 
@@ -52,14 +53,15 @@ def linear_regression(learn_rate=1e-3):
         print(grad)
 
         delta -= learn_rate * grad
+        ax.clear()
+        ax.plot(X, Y_pred)
+        ax.scatter(X, Y)
 
         if np.linalg.norm(grad) < 1e-10:
             break
+    plt.show()
 
     delta[1] = delta[1] * (max_Y - min_Y) / (max_X - min_X)
     delta[0] = delta[0] * (max_Y - min_Y) + min_Y - delta[1] * min_X
     print(delta)
-    plt.scatter(X, Y)
-    plt.scatter(X, Y_pred)
-    plt.show()
     return delta
