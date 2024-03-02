@@ -1,7 +1,5 @@
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import style
 
 
 def parse_data():
@@ -19,8 +17,7 @@ def parse_data():
     return data
 
 
-# Adjusted the learning rate for example
-def linear_regression(learn_rate=1e-1):
+def linear_regression(learn_rate=1):
     delta = np.array([0.0, 0.0])
 
     pos = parse_data()
@@ -28,8 +25,6 @@ def linear_regression(learn_rate=1e-1):
 
     X = np.array(X)
     Y = np.array(Y)
-    print("before X: ", X)
-    print("before Y: ", Y)
 
     min_X = np.min(X)
     min_Y = np.min(Y)
@@ -38,30 +33,42 @@ def linear_regression(learn_rate=1e-1):
 
     X = (X - min_X) / (max_X - min_X)
     Y = (Y - min_Y) / (max_Y - min_Y)
-    print("after X: ", X)
-    print("after Y: ", Y)
 
+    plt.ion()
     fig, ax = plt.subplots()
-    for i in range(1000):
-        # while 1:
+    while 1:
         Y_pred = delta[1] * X + delta[0]
 
         grad = np.array([
             (Y_pred - Y).mean(),
             ((Y_pred - Y) * X).mean()
         ])
-        print(grad)
+        print("gradient X : ", grad[0])
+        print("gradient Y : ", grad[1], "\n")
 
         delta -= learn_rate * grad
-        ax.clear()
-        ax.plot(X, Y_pred)
+        ax.cla()
+        ax.plot(X, Y_pred, "red")
         ax.scatter(X, Y)
 
-        if np.linalg.norm(grad) < 1e-10:
+        plt.show()
+        plt.pause(0.0001)
+        if np.linalg.norm(grad) < 1e-3:
             break
-    plt.show()
 
     delta[1] = delta[1] * (max_Y - min_Y) / (max_X - min_X)
     delta[0] = delta[0] * (max_Y - min_Y) + min_Y - delta[1] * min_X
-    print(delta)
+    Y_min = np.mean(Y)
+
+    nomerator = np.sum(np.square(Y_pred - Y))
+    denomerator = np.sum(np.square(Y_pred - Y_min))
+    r2 = 1 - nomerator / denomerator
+
+    with open("result", 'w') as data_file:
+        data_file.write(str(delta))
+        data_file.write("\n")
+        data_file.write(str(r2))
+    
+    print("finish")
+    plt.pause(3)
     return delta
