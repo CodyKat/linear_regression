@@ -3,7 +3,7 @@ import numpy as np
 
 
 def main():
-    mileage = int(input())
+    mileage = int(input("please input mileage : "))
     linear_regression()
 
     meta_data = open('result', 'r')
