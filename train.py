@@ -64,7 +64,7 @@ def linear_regression(learn_rate=1):
     denomerator = np.sum(np.square(Y_pred - Y_min))
     r2 = 1 - nomerator / denomerator
 
-    with open("result", 'w') as data_file:
+    with open("result.txt", 'w') as data_file:
         data_file.write(str(delta))
         data_file.write("\n")
         data_file.write(str(r2))
