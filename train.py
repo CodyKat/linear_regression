@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def parse_data():
     data = []
     with open("data.csv", mode='r') as data_file:
