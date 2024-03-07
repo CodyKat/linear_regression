@@ -3,20 +3,24 @@ import matplotlib.pyplot as plt
 
 def parse_data():
     data = []
-    with open("data.csv", mode='r') as data_file:
-        line = data_file.readline()
-        while line:
+    try:
+        with open("data.csv", mode='r') as data_file:
             line = data_file.readline()
-            if line == '':
-                break
-            line = line.split(',')
-            line[1] = line[1].strip()
-            list_line = [int(i) for i in line]
-            data.append(list_line)
+            while line:
+                line = data_file.readline()
+                if line == '':
+                    break
+                line = line.split(',')
+                line[1] = line[1].strip()
+                list_line = [int(i) for i in line]
+                data.append(list_line)
+    except FileNotFoundError:
+        print("data file not found")
+        exit()
     return data
 
 
-def linear_regression(learn_rate=1):
+def train(data_file = "data.csv", learn_rate=1,):
     delta = np.array([0.0, 0.0])
 
     pos = parse_data()
@@ -60,7 +64,7 @@ def linear_regression(learn_rate=1):
     Y_min = np.mean(Y)
 
     nomerator = np.sum(np.square(Y_pred - Y))
-    denomerator = np.sum(np.square(Y_pred - Y_min))
+    denomerator = np.sum(np.square(Y_pred - np.mean(Y)))
     r2 = 1 - nomerator / denomerator
 
     with open("result.txt", 'w') as data_file:
@@ -71,3 +75,10 @@ def linear_regression(learn_rate=1):
     print("finish")
     plt.pause(3)
     return delta
+
+if __name__ == "__main__":
+    try:
+        data_file = str(input("please input data.csv file name (default = data.csv): "))
+    except ValueError:
+        data_file = "data.csv"
+    train(data_file, learn_rate = 1)
