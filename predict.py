@@ -1,5 +1,5 @@
 def predict():
-    print("WARNNING : data.csv must be included in current folder")
+    print("WARNNING : result.txt must be included in current folder")
     try:
         mileage = int(input("please input mileage : "))
     except ValueError:
